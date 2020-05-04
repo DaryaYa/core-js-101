@@ -206,8 +206,34 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let res = '';
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      if (x === 0 && y === 0) {
+        res += '┌';
+      } else if (x === width - 1 && y === 0) {
+        res += '┐\n';
+      } else if (y === 0) {
+        res += '─';
+      } else if (x === 0 && y === height - 1) {
+        res += '└';
+      } else if (x === width - 1 && y === height - 1) {
+        res += '┘\n';
+      } else if (y === height - 1) {
+        res += '─';
+      } else if (x === 0 && y > 0) {
+        res += '│';
+      } else if (x === width - 1 && y > 0) {
+        res += '│\n';
+      } else if (x > 0 && y > 0) {
+        res += ' ';
+      }
+    }
+  }
+
+  return res;
 }
 
 
@@ -227,8 +253,26 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const BIG_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const SMALL_LETTERS = 'abcdefghijklmnopqrstuvwxyz';
+  let result = '';
+
+  str.split('').forEach((letter) => {
+    if (BIG_LETTERS.includes(letter)) {
+      const index = BIG_LETTERS.indexOf(letter);
+      const shift = (index + 13) % 26;
+      result += BIG_LETTERS[shift];
+    } else if (SMALL_LETTERS.includes(letter)) {
+      const index = SMALL_LETTERS.indexOf(letter);
+      const shift = (index + 13) % 26;
+      result += SMALL_LETTERS[shift];
+    } else {
+      result += letter;
+    }
+  });
+
+  return result;
 }
 
 /**
