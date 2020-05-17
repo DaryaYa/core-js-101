@@ -1,3 +1,7 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-undef */
+/* eslint-disable no-return-assign */
+/* eslint-disable no-prototype-builtins */
 /* ********************************************************************************************
  *                                                                                            *
  * Please read the following tutorial before implementing tasks:                               *
@@ -477,8 +481,8 @@ function getIdentityMatrix(n) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  return new Array(end - start + 1).fill(0).map((elem, index) => index + start);
 }
 
 /**
@@ -492,8 +496,8 @@ function getIntervalArray(/* start, end */) {
  *   [ 'a', 'a', 'a', 'a' ]  => [ 'a' ]
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
-function distinct(/* arr */) {
-  throw new Error('Not implemented');
+function distinct(arr) {
+  return Array.from(new Set(arr));
 }
 
 /**
@@ -526,10 +530,22 @@ function distinct(/* arr */) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
-}
 
+function group(array, keySelector, valueSelector) {
+  const myMap = array.reduce((arr, item) => {
+    const key = keySelector(item);
+    const value = valueSelector(item);
+    if (arr.has(key)) {
+      const valueArr = arr.get(key).slice();
+      valueArr.push(value);
+      arr.set(key, valueArr);
+      return arr;
+    }
+    arr.set(key, [value]);
+    return arr;
+  }, new Map());
+  return myMap;
+}
 
 /**
  * Projects each element of the specified array to a sequence
@@ -544,13 +560,13 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.reduce((acc, val) => acc.concat(childrenSelector(val)), []);
 }
 
 
 /**
- * Returns an element from the multidimentional array by the specified indexes.
+ * Returns an element from the multidimensional array by the specified indexes.
  *
  * @param {array} arr
  * @param {array} indexes
@@ -561,8 +577,8 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((elem, index) => elem[index], arr);
 }
 
 
@@ -584,8 +600,14 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length < 4) {
+    return arr.reverse();
+  }
+  const mid = Math.floor(arr.length / 2);
+  const head = arr.slice(0, mid);
+  const tail = arr.slice(mid);
+  return arr.length % 2 === 0 ? tail.concat(head) : [...arr.slice(mid + 1), arr[mid], ...head];
 }
 
 
